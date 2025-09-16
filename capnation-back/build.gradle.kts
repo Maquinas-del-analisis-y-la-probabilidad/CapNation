@@ -23,6 +23,9 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.13.4")
 }
 
 tasks.withType<Test> {

@@ -1,15 +1,17 @@
 package com.machines.capnation.formatter;
 
 import com.machines.capnation.domain.Cap;
-
+import com.machines.capnation.domain.CapSize;
+import com.machines.capnation.domain.CapStyle;
+import com.machines.capnation.domain.Gender;
 
 public class CapFormatter {
     private static final String separator = ",";
 
     /***
+     * It takes an instance of a cap class and returns his representation in database so:
+     * id|style|color|brand|collaboration|price|size|gender|stock
      * @param cap: Instance of a Cap
-     *           it takes the cap and return his representation in database, it'll look like this
-     *           id|style|color|brand|collaboration|price|size|gender|stock
      * @return Text representation of a Cap in the text database
      */
     public String capToText(Cap cap) {
@@ -23,24 +25,24 @@ public class CapFormatter {
                 .append(cap.getStock()).toString();
     }
 
-//    public Cap TextToCap(String line) {
-//        String[] attributes = line.split(separator);
-//
-//        switch (attributes.length) {
-//            case 7 -> {
-//                return new Cap.CapBuilder(
-//                        Long.parseLong(attributes[0]),
-//                        attributes[1],
-//                        CapStyle.valueOf(attributes[2]),
-//                        attributes[3], Double.parseDouble(attributes[4]),
-//                        Integer.parseInt(attributes[5]),
-//                        CapSize.valueOf(attributes[6])
-//                ).build();
-//            }
-//
-//            case 8 -> {
-//
-//            }
-//        }
-//    }
+    /***
+     * It takes a line in this format: id|style|color|brand|collaboration|price|size|gender|stock
+     * and convert it to an instance of Cap class
+     * @param line that represents the cap in file database
+     * @return an instance of the clas Cap with the values of the line
+     */
+    public Cap TextToCap(String line) {
+        String[] attributes = line.split(separator);
+        Cap cap = new Cap.CapBuilder(
+                Long.parseLong(attributes[0]),
+                attributes[1],
+                CapStyle.valueOf(attributes[2]),
+                attributes[3], Double.parseDouble(attributes[4]),
+                Integer.parseInt(attributes[5]),
+                CapSize.valueOf(attributes[6])
+        ).build();
+
+        return cap
+
+    }
 }

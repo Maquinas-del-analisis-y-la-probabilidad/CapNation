@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Cap {
     private long id;
     private String brand;
-    private CapStyle stile;
+    private CapStyle style;
     private String color;
     private String collaboration;
     private double price;
@@ -55,7 +55,7 @@ public class Cap {
         return "Cap{" +
                 "id=" + id +
                 ", brand='" + brand + '\'' +
-                ", stile=" + stile +
+                ", stile=" + style +
                 ", color='" + color + '\'' +
                 ", collaboration='" + collaboration + '\'' +
                 ", price=" + price +
@@ -69,18 +69,18 @@ public class Cap {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Cap cap = (Cap) o;
-        return id == cap.id && Double.compare(price, cap.price) == 0 && stock == cap.stock && Objects.equals(brand, cap.brand) && stile == cap.stile && Objects.equals(color, cap.color) && Objects.equals(collaboration, cap.collaboration) && size == cap.size && gender == cap.gender;
+        return id == cap.id && Double.compare(price, cap.price) == 0 && stock == cap.stock && Objects.equals(brand, cap.brand) && style == cap.style && Objects.equals(color, cap.color) && Objects.equals(collaboration, cap.collaboration) && size == cap.size && gender == cap.gender;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, brand, stile, color, collaboration, price, size, gender, stock);
+        return Objects.hash(id, brand, style, color, collaboration, price, size, gender, stock);
     }
 
-    private Cap(long id, String brand, CapStyle stile, String color, String collaboration, double price, CapSize size, Gender gender, int stock) {
+    private Cap(long id, String brand, CapStyle style, String color, String collaboration, double price, CapSize size, Gender gender, int stock) {
         this.id = id;
         this.brand = brand;
-        this.stile = stile;
+        this.style = style;
         this.color = color;
         this.collaboration = collaboration;
         this.price = price;
@@ -105,12 +105,12 @@ public class Cap {
         this.brand = brand;
     }
 
-    public CapStyle getStile() {
-        return stile;
+    public CapStyle getStyle() {
+        return style;
     }
 
-    public void setStile(CapStyle stile) {
-        this.stile = stile;
+    public void setStyle(CapStyle style) {
+        this.style = style;
     }
 
     public String getColor() {

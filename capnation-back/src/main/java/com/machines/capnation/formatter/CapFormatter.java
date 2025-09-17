@@ -5,6 +5,8 @@ import com.machines.capnation.domain.CapSize;
 import com.machines.capnation.domain.CapStyle;
 import com.machines.capnation.domain.Gender;
 
+import java.util.Objects;
+
 public class CapFormatter {
     private static final String separator = ",";
 
@@ -20,6 +22,7 @@ public class CapFormatter {
                 .append(cap.getColor()).append(separator)
                 .append(cap.getBrand()).append(separator)
                 .append((cap.getCollaboration() != null) ? cap.getCollaboration() : "-").append(separator)
+                .append(cap.getPrice()).append(separator)
                 .append(cap.getSize().toString()).append(separator)
                 .append((cap.getGender() != null) ? cap.getGender().toString() : "-").append(separator) // field to gender
                 .append(cap.getStock()).toString();
@@ -32,17 +35,24 @@ public class CapFormatter {
      * @return an instance of the clas Cap with the values of the line
      */
     public Cap TextToCap(String line) {
-        String[] attributes = line.split(separator);
+        String[] att = line.split(separator);
         Cap cap = new Cap.CapBuilder(
-                Long.parseLong(attributes[0]),
-                attributes[1],
-                CapStyle.valueOf(attributes[2]),
-                attributes[3], Double.parseDouble(attributes[4]),
-                Integer.parseInt(attributes[5]),
-                CapSize.valueOf(attributes[6])
+                Long.parseLong(att[0]),
+                CapStyle.valueOf(att[1]),
+                att[2],
+                att[3],
+                Double.parseDouble(att[5]),
+                CapSize.valueOf(att[6]),
+                Integer.parseInt(att[8])
         ).build();
 
-        return cap
+        if (!Objects.equals(att[4], "-")) {
+            cap.setCollaboration(att[4]);
+        }
+        if (!Objects.equals(att[7], "-")) {
+            cap.setGender(Gender.valueOf(att[7]));
+        }
+        return cap;
 
     }
 }

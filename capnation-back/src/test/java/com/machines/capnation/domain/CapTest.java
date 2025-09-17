@@ -6,7 +6,7 @@ public class CapTest {
 
     @Test
     void create_new_class() {
-        Cap cap = new Cap.CapBuilder(1, "Nike", CapStyle.DAD_CAP, "Blue", 300.0, 4, CapSize.LARGE)
+        Cap cap = new Cap.CapBuilder(1, CapStyle.DAD_CAP, "Blue", "Nike", 300.0, CapSize.LARGE, 4)
                 .setGender(Gender.FEMALE)
                 .build();
         System.out.println(cap.toString());

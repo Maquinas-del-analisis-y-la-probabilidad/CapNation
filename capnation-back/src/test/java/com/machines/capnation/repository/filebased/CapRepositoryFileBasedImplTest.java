@@ -13,21 +13,18 @@ class CapRepositoryFileBasedImplTest {
 
     @Test
     void check_database() {
-        repository.findAll().stream().forEach(c -> {
-            System.out.println(c);
-        });
+        repository.findAll().forEach(System.out::println);
     }
 
     @Test
     void check_after_append_new_cap() {
-        Cap expected = new Cap.CapBuilder(1, CapStyle.FLAT_CAP, "Red", "nike", 40000.0, CapSize.SMALL, 3)
+        Cap expected = new Cap.CapBuilder(CapStyle.FLAT_CAP, "Red", "nike", 40000.0, CapSize.SMALL, 3)
+                .setId(1L)
                 .build();
         Cap actual = repository.save(expected);
         assertEquals(expected, actual);
 
-        repository.findAll().stream().forEach(c -> {
-            System.out.println(c);
-        });
+        repository.findAll().forEach(System.out::println);
     }
 
 }

@@ -25,8 +25,7 @@ public class Cap {
         private Gender gender;
         private int stock;
 
-        public CapBuilder(long id, CapStyle style, String color, String brand, double price, CapSize size, int stock) {
-            this.id = id;
+        public CapBuilder(CapStyle style, String color, String brand, double price, CapSize size, int stock) {
             this.brand = brand;
             this.style = style;
             this.color = color;
@@ -46,6 +45,11 @@ public class Cap {
 
         public CapBuilder setGender(Gender gender) {
             this.gender = gender;
+            return this;
+        }
+
+        public CapBuilder setId(Long id) {
+            this.id = id;
             return this;
         }
     }

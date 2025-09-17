@@ -19,7 +19,6 @@ import java.util.List;
 public class CapRepositoryFileBasedImpl implements CapRepository {
     private static final CapFormatter formatter = new CapFormatter();
     private static final String address = "classpath:caps.txt";
-
     private final ResourceLoader resourceLoader = new DefaultResourceLoader();
 
     @Override

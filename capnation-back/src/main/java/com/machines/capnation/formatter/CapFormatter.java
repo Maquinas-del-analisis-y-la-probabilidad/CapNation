@@ -1,9 +1,9 @@
 package com.machines.capnation.formatter;
 
-import com.machines.capnation.domain.Cap;
-import com.machines.capnation.domain.CapSize;
-import com.machines.capnation.domain.CapStyle;
-import com.machines.capnation.domain.Gender;
+import com.machines.capnation.model.Cap;
+import com.machines.capnation.model.CapSize;
+import com.machines.capnation.model.CapStyle;
+import com.machines.capnation.model.Gender;
 
 import java.util.Objects;
 

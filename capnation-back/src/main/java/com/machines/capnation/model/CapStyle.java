@@ -1,4 +1,4 @@
-package com.machines.capnation.domain;
+package com.machines.capnation.model;
 
 public enum CapStyle {
     BASEBALL_CAP,

@@ -5,11 +5,15 @@ import com.machines.capnation.exceptions.CapNotFoundException;
 import com.machines.capnation.formatter.CapFormatter;
 import com.machines.capnation.model.Cap;
 import com.machines.capnation.repository.CapRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +27,7 @@ import java.util.stream.Collectors;
 @Repository
 public class CapRepositoryFileBasedImpl implements CapRepository {
     private static final CapFormatter formatter = new CapFormatter();
+
 
     @Value("file:${caps.file}")
     private Resource resource;
@@ -80,6 +85,26 @@ public class CapRepositoryFileBasedImpl implements CapRepository {
     private void appendLine(String line) {
         try (FileWriter writer = new FileWriter(resource.getFile(), true)) {
             writer.append("\n").append(line);
+        } catch (IOException e) {
+            throw new CapDatabaseException(e.getMessage());
+        }
+    }
+
+    private void createFile() {
+        var homePath = System.getProperty("user.home");
+        var path = String.format("%s/data", homePath);
+
+        try {
+            Files.createDirectories(Paths.get(path));
+        } catch (FileAlreadyExistsException e) {
+            System.out.printf("path %s already exist", path);
+        } catch (IOException e) {
+            throw new CapDatabaseException(e.getMessage());
+        }
+
+        try {
+            File file = new File(String.format("%s/caps.txt", path));
+            var result = file.createNewFile();
         } catch (IOException e) {
             throw new CapDatabaseException(e.getMessage());
         }

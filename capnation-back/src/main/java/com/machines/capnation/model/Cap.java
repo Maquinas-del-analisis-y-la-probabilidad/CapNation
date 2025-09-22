@@ -93,6 +93,11 @@ public class Cap {
         this.stock = stock;
     }
 
+    public boolean similar(Cap cap) {
+        return Double.compare(price, cap.price) == 0 && stock == cap.stock && Objects.equals(brand, cap.brand) && style == cap.style && Objects.equals(color, cap.color) && Objects.equals(collaboration, cap.collaboration) && size == cap.size && gender == cap.gender;
+
+    }
+
     public long getId() {
         return id;
     }

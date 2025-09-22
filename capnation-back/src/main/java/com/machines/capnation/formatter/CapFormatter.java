@@ -12,7 +12,7 @@ public class CapFormatter {
 
     /***
      * It takes an instance of a cap class and returns his representation in database so:
-     * id|style|color|brand|collaboration|price|size|gender|stock
+     * id|style|color|brand|collaboration|price|size|gender|stock|image-url
      * @param cap: Instance of a Cap
      * @return Text representation of a Cap in the text database
      */
@@ -25,11 +25,13 @@ public class CapFormatter {
                 .append(cap.getPrice()).append(separator)
                 .append(cap.getSize().toString()).append(separator)
                 .append((cap.getGender() != null) ? cap.getGender().toString() : "-").append(separator) // field to gender
-                .append(cap.getStock()).toString();
+                .append(cap.getStock()).append(separator)
+                .append((cap.getImageUrl() != null) ? cap.getImageUrl() : "-")
+                .toString();
     }
 
     /***
-     * It takes a line in this format: id|style|color|brand|collaboration|price|size|gender|stock
+     * It takes a line in this format: id|style|color|brand|collaboration|price|size|gender|stock|image-url
      * and convert it to an instance of Cap class
      * @param line that represents the cap in file database
      * @return an instance of the clas Cap with the values of the line
@@ -52,6 +54,10 @@ public class CapFormatter {
         }
         if (!Objects.equals(att[7], "-")) {
             cap.setGender(Gender.valueOf(att[7]));
+        }
+
+        if (!Objects.equals(att[9], "-")) {
+            cap.setImageUrl(att[9]);
         }
         return cap;
     }

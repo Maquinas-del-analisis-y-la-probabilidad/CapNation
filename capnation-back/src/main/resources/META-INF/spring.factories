@@ -1,2 +1,2 @@
 org.springframework.boot.env.EnvironmentPostProcessor=\
-  com.machines.capnation.FileValidator
+  com.machines.capnation.initializer.FileValidator

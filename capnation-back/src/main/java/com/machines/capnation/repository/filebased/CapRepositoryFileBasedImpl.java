@@ -89,24 +89,4 @@ public class CapRepositoryFileBasedImpl implements CapRepository {
             throw new CapDatabaseException(e.getMessage());
         }
     }
-
-    private void createFile() {
-        var homePath = System.getProperty("user.home");
-        var path = String.format("%s/data", homePath);
-
-        try {
-            Files.createDirectories(Paths.get(path));
-        } catch (FileAlreadyExistsException e) {
-            System.out.printf("path %s already exist", path);
-        } catch (IOException e) {
-            throw new CapDatabaseException(e.getMessage());
-        }
-
-        try {
-            File file = new File(String.format("%s/caps.txt", path));
-            var result = file.createNewFile();
-        } catch (IOException e) {
-            throw new CapDatabaseException(e.getMessage());
-        }
-    }
 }

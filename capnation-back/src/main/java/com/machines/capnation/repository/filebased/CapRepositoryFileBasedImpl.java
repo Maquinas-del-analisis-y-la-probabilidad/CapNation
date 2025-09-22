@@ -63,9 +63,7 @@ public class CapRepositoryFileBasedImpl implements CapRepository {
 
     private List<Cap> readLines() {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
-            return reader.lines().filter(line -> {
-                return !line.isBlank();
-            }).map(formatter::TextToCap).collect(Collectors.toList());
+            return reader.lines().filter(line -> !line.isBlank()).map(formatter::TextToCap).collect(Collectors.toList());
         } catch (IOException e) {
             throw new CapDatabaseException(e.getMessage());
         }

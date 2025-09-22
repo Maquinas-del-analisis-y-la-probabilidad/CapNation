@@ -25,20 +25,25 @@ public class CapRepositoryFileBasedImpl implements CapRepository {
     @Value("classpath:caps.txt")
     private Resource resource;
 
+    private List<Cap> caps;
+
 
     @Override
     public List<Cap> findAll() {
-        return readLines();
+        if (caps == null) {
+            caps = findAll();
+        }
+        return caps;
     }
 
     @Override
     public Cap save(Cap cap) {
-        List<Cap> caps = findAll();
         var similar = caps.stream().filter(cap::similar).findAny();
 
         if (similar.isEmpty()) { // there is not a cap similar to the entered
             cap.setId(currentId(caps) + 1);
             appendLine(formatter.capToText(cap));
+            caps.add(cap);
             return cap;
         } else {
             throw new CapDatabaseException("There is other cap with similar characteristics");

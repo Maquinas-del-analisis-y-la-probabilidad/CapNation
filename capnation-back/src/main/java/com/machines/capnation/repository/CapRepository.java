@@ -6,5 +6,8 @@ import java.util.List;
 
 public interface CapRepository {
     List<Cap> findAll(); // finds all caps stored in file
+
     Cap save(Cap cap); // save a new cap in the file and return it
+
+    Cap findById(Long id);
 }

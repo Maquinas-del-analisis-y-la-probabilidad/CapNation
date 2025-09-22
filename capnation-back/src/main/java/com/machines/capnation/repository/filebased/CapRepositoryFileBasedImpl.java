@@ -1,6 +1,7 @@
 package com.machines.capnation.repository.filebased;
 
 import com.machines.capnation.exceptions.CapDatabaseException;
+import com.machines.capnation.exceptions.CapNotFoundException;
 import com.machines.capnation.formatter.CapFormatter;
 import com.machines.capnation.model.Cap;
 import com.machines.capnation.repository.CapRepository;
@@ -35,12 +36,13 @@ public class CapRepositoryFileBasedImpl implements CapRepository {
         return caps;
     }
 
-    private void initializeList() {
-        if (caps == null) {
-            caps = readLines();
-        }
+    @Override
+    public Cap findById(Long id) {
+        initializeList();
+        return caps.stream()
+                .filter(c -> c.getId() == id)
+                .findFirst().orElseThrow(() -> new CapNotFoundException(String.format("Cap of id %d not founded", id)));
     }
-
 
     @Override
     public Cap save(Cap cap) {
@@ -54,6 +56,12 @@ public class CapRepositoryFileBasedImpl implements CapRepository {
             return cap;
         } else {
             throw new CapDatabaseException("There is other cap with similar characteristics");
+        }
+    }
+
+    private void initializeList() {
+        if (caps == null) {
+            caps = readLines();
         }
     }
 

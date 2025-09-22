@@ -1,7 +1,6 @@
 package com.machines.capnation.controller;
 
-import com.fasterxml.jackson.databind.ser.AnyGetterWriter;
-import com.machines.capnation.exceptions.CapException;
+
 import com.machines.capnation.model.Cap;
 import com.machines.capnation.service.CapService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,11 @@ public class CapController {
 
     @GetMapping("/find-all")
     public ResponseEntity<List<Cap>> getAllCaps() {
-
         return ResponseEntity.ok(service.findAll());
+    }
+
+    @GetMapping("/find")
+    public ResponseEntity<Cap> getById(@RequestParam("id") Long id) {
+        return ResponseEntity.ok().body(service.findById(id));
     }
 }

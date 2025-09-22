@@ -9,5 +9,5 @@ public enum CapStyle {
     FITTED_CAP,
     BEANIE,
     VISOR,
-    FIVE_PANEL_CAP;
+    FIVE_PANEL_CAP
 }

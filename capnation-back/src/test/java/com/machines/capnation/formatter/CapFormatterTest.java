@@ -13,7 +13,8 @@ public class CapFormatterTest {
 
     @Test
     void format_cap_with_nul_gender_and_collaboration() {
-        Cap cap = new Cap.CapBuilder(1, CapStyle.BASEBALL_CAP, "Black", "addidas", 45000.0, CapSize.LARGE, 3)
+        Cap cap = new Cap.CapBuilder(CapStyle.BASEBALL_CAP, "Black", "addidas", 45000.0, CapSize.LARGE, 3)
+                .setId(1L)
                 .build();
         String expected = "1,BASEBALL_CAP,Black,addidas,-,45000.0,LARGE,-,3";
         String actual = formatter.capToText(cap);
@@ -22,7 +23,8 @@ public class CapFormatterTest {
 
     @Test
     void format_cap_with_nul_collaboration() {
-        Cap cap = new Cap.CapBuilder(1, CapStyle.BASEBALL_CAP, "Black", "addidas", 45000.0, CapSize.LARGE, 3)
+        Cap cap = new Cap.CapBuilder(CapStyle.BASEBALL_CAP, "Black", "addidas", 45000.0, CapSize.LARGE, 3)
+                .setId(1L)
                 .setGender(Gender.MALE)
                 .build();
 
@@ -33,7 +35,8 @@ public class CapFormatterTest {
 
     @Test
     void format_cap_with_nul_gender() {
-        Cap cap = new Cap.CapBuilder(1, CapStyle.BASEBALL_CAP, "Black", "addidas", 45000.0, CapSize.LARGE, 3)
+        Cap cap = new Cap.CapBuilder(CapStyle.BASEBALL_CAP, "Black", "addidas", 45000.0, CapSize.LARGE, 3)
+                .setId(1L)
                 .setCollaboration("BMW")
                 .build();
 
@@ -44,7 +47,8 @@ public class CapFormatterTest {
 
     @Test
     void format_cap_with_no_null_parameters() {
-        Cap cap = new Cap.CapBuilder(1, CapStyle.BASEBALL_CAP, "black", "addidas", 30000.0, CapSize.LARGE, 4)
+        Cap cap = new Cap.CapBuilder( CapStyle.BASEBALL_CAP, "black", "addidas", 30000.0, CapSize.LARGE, 4)
+                .setId(1L)
                 .setCollaboration("bmw")
                 .setGender(Gender.MALE)
                 .build();
@@ -57,7 +61,8 @@ public class CapFormatterTest {
     @Test
     void create_line_with_no_null_values() {
         String line = "1,BASEBALL_CAP,Black,addidas,BMW,3000.0,LARGE,MALE,3";
-        Cap expected = new Cap.CapBuilder(1, CapStyle.BASEBALL_CAP, "Black", "addidas", 3000.0, CapSize.LARGE, 3)
+        Cap expected = new Cap.CapBuilder(CapStyle.BASEBALL_CAP, "Black", "addidas", 3000.0, CapSize.LARGE, 3)
+                .setId(1L)
                 .setCollaboration("BMW")
                 .setGender(Gender.MALE)
                 .build();
@@ -70,7 +75,8 @@ public class CapFormatterTest {
     @Test
     void create_cap_form_line_with_no_gender() {
         String line = "1,BASEBALL_CAP,Black,addidas,BMW,300.0,LARGE,-,3";
-        Cap expected = new Cap.CapBuilder(1, CapStyle.BASEBALL_CAP, "Black", "addidas", 300.0, CapSize.LARGE, 3)
+        Cap expected = new Cap.CapBuilder(CapStyle.BASEBALL_CAP, "Black", "addidas", 300.0, CapSize.LARGE, 3)
+                .setId(1L)
                 .setCollaboration("BMW")
                 .build();
 
@@ -82,7 +88,8 @@ public class CapFormatterTest {
     @Test
     void create_cap_from_line_with_no_collaboration() {
         String line = "1,BASEBALL_CAP,Black,addidas,-,300.0,LARGE,MALE,3";
-        var expected = new Cap.CapBuilder(1, CapStyle.BASEBALL_CAP, "Black", "addidas", 300.0, CapSize.LARGE, 3)
+        var expected = new Cap.CapBuilder(CapStyle.BASEBALL_CAP, "Black", "addidas", 300.0, CapSize.LARGE, 3)
+                .setId(1L)
                 .setGender(Gender.MALE)
                 .build();
 
@@ -94,7 +101,8 @@ public class CapFormatterTest {
     @Test
     void create_cap_from_line_with_no_collaboration_nor_gender() {
         String line = "1,BASEBALL_CAP,Black,addidas,-,300.0,LARGE,-,3";
-        var expected = new Cap.CapBuilder(1, CapStyle.BASEBALL_CAP, "Black", "addidas", 300.0, CapSize.LARGE, 3)
+        var expected = new Cap.CapBuilder(CapStyle.BASEBALL_CAP, "Black", "addidas", 300.0, CapSize.LARGE, 3)
+                .setId(1L)
                 .build();
 
         var actual = formatter.TextToCap(line);

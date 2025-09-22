@@ -35,16 +35,17 @@ public class CapFormatter {
      * @return an instance of the clas Cap with the values of the line
      */
     public Cap TextToCap(String line) {
+        System.out.println("linea: " + line);
         String[] att = line.split(separator);
         Cap cap = new Cap.CapBuilder(
-                Long.parseLong(att[0]),
                 CapStyle.valueOf(att[1]),
                 att[2],
                 att[3],
                 Double.parseDouble(att[5]),
                 CapSize.valueOf(att[6]),
                 Integer.parseInt(att[8])
-        ).build();
+        ).setId(Long.parseLong(att[0]))
+                .build();
 
         if (!Objects.equals(att[4], "-")) {
             cap.setCollaboration(att[4]);
@@ -53,6 +54,5 @@ public class CapFormatter {
             cap.setGender(Gender.valueOf(att[7]));
         }
         return cap;
-
     }
 }

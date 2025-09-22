@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /***
@@ -22,7 +23,7 @@ import java.util.List;
 public class CapRepositoryFileBasedImpl implements CapRepository {
     private static final CapFormatter formatter = new CapFormatter();
 
-    @Value("classpath:caps.txt")
+    @Value("file:${caps.file}")
     private Resource resource;
 
     private List<Cap> caps;
@@ -30,14 +31,20 @@ public class CapRepositoryFileBasedImpl implements CapRepository {
 
     @Override
     public List<Cap> findAll() {
-        if (caps == null) {
-            caps = findAll();
-        }
+        initializeList();
         return caps;
     }
 
+    private void initializeList() {
+        if (caps == null) {
+            caps = readLines();
+        }
+    }
+
+
     @Override
     public Cap save(Cap cap) {
+        initializeList();
         var similar = caps.stream().filter(cap::similar).findAny();
 
         if (similar.isEmpty()) { // there is not a cap similar to the entered
@@ -58,7 +65,7 @@ public class CapRepositoryFileBasedImpl implements CapRepository {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
             return reader.lines().filter(line -> {
                 return !line.isBlank();
-            }).map(formatter::TextToCap).toList();
+            }).map(formatter::TextToCap).collect(Collectors.toList());
         } catch (IOException e) {
             throw new CapDatabaseException(e.getMessage());
         }

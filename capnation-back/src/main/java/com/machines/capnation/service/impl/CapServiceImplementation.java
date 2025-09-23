@@ -36,4 +36,9 @@ public class CapServiceImplementation implements CapService {
         }
         return repository.save(cap);
     }
+
+    @Override
+    public Cap findById(Long id) {
+        return repository.findById(id);
+    }
 }

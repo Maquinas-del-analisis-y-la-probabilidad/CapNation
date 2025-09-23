@@ -1,15 +1,21 @@
 package com.machines.capnation.repository.filebased;
 
 import com.machines.capnation.exceptions.CapDatabaseException;
+import com.machines.capnation.exceptions.CapNotFoundException;
 import com.machines.capnation.formatter.CapFormatter;
 import com.machines.capnation.model.Cap;
 import com.machines.capnation.repository.CapRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /***
@@ -22,26 +28,45 @@ import java.util.List;
 public class CapRepositoryFileBasedImpl implements CapRepository {
     private static final CapFormatter formatter = new CapFormatter();
 
-    @Value("classpath:caps.txt")
+
+    @Value("file:${caps.file}")
     private Resource resource;
+
+    private List<Cap> caps;
 
 
     @Override
     public List<Cap> findAll() {
-        return readLines();
+        initializeList();
+        return caps;
+    }
+
+    @Override
+    public Cap findById(Long id) {
+        initializeList();
+        return caps.stream()
+                .filter(c -> c.getId() == id)
+                .findFirst().orElseThrow(() -> new CapNotFoundException(String.format("Cap of id %d not founded", id)));
     }
 
     @Override
     public Cap save(Cap cap) {
-        List<Cap> caps = findAll();
+        initializeList();
         var similar = caps.stream().filter(cap::similar).findAny();
 
         if (similar.isEmpty()) { // there is not a cap similar to the entered
             cap.setId(currentId(caps) + 1);
             appendLine(formatter.capToText(cap));
+            caps.add(cap);
             return cap;
         } else {
             throw new CapDatabaseException("There is other cap with similar characteristics");
+        }
+    }
+
+    private void initializeList() {
+        if (caps == null) {
+            caps = readLines();
         }
     }
 
@@ -51,9 +76,7 @@ public class CapRepositoryFileBasedImpl implements CapRepository {
 
     private List<Cap> readLines() {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
-            return reader.lines().filter(line -> {
-                return !line.isBlank();
-            }).map(formatter::TextToCap).toList();
+            return reader.lines().filter(line -> !line.isBlank()).map(formatter::TextToCap).collect(Collectors.toList());
         } catch (IOException e) {
             throw new CapDatabaseException(e.getMessage());
         }

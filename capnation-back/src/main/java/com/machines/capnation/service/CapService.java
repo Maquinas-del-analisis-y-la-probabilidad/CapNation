@@ -8,4 +8,6 @@ public interface CapService {
     List<Cap> findAll();
 
     Cap save(Cap cap);
+
+    Cap findById(Long id);
 }

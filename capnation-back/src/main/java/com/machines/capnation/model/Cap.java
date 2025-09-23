@@ -12,7 +12,7 @@ public class Cap {
     private CapSize size;
     private Gender gender;
     private int stock;
-
+    private String imageUrl;
 
     public static class CapBuilder {
         private long id;
@@ -24,6 +24,7 @@ public class Cap {
         private CapSize size;
         private Gender gender;
         private int stock;
+        private String imageUrl;
 
         public CapBuilder(CapStyle style, String color, String brand, double price, CapSize size, int stock) {
             this.brand = brand;
@@ -35,7 +36,7 @@ public class Cap {
         }
 
         public Cap build() {
-            return new Cap(id, brand, style, color, collaboration, price, size, gender, stock);
+            return new Cap(id, brand, style, color, collaboration, price, size, gender, stock, imageUrl);
         }
 
         public CapBuilder setCollaboration(String collaboration) {
@@ -45,6 +46,11 @@ public class Cap {
 
         public CapBuilder setGender(Gender gender) {
             this.gender = gender;
+            return this;
+        }
+
+        public CapBuilder setImageUrl(String url) {
+            this.imageUrl = url;
             return this;
         }
 
@@ -66,6 +72,7 @@ public class Cap {
                 ", size=" + size +
                 ", gender=" + gender +
                 ", stock=" + stock +
+                ", imageUrl=" + imageUrl +
                 '}';
     }
 
@@ -73,7 +80,7 @@ public class Cap {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Cap cap = (Cap) o;
-        return id == cap.id && Double.compare(price, cap.price) == 0 && stock == cap.stock && Objects.equals(brand, cap.brand) && style == cap.style && Objects.equals(color, cap.color) && Objects.equals(collaboration, cap.collaboration) && size == cap.size && gender == cap.gender;
+        return id == cap.id && Double.compare(price, cap.price) == 0 && stock == cap.stock && Objects.equals(brand, cap.brand) && style == cap.style && Objects.equals(color, cap.color) && Objects.equals(collaboration, cap.collaboration) && size == cap.size && gender == cap.gender && Objects.equals(imageUrl, cap.imageUrl);
     }
 
     @Override
@@ -81,7 +88,7 @@ public class Cap {
         return Objects.hash(id, brand, style, color, collaboration, price, size, gender, stock);
     }
 
-    private Cap(long id, String brand, CapStyle style, String color, String collaboration, double price, CapSize size, Gender gender, int stock) {
+    private Cap(long id, String brand, CapStyle style, String color, String collaboration, double price, CapSize size, Gender gender, int stock, String url) {
         this.id = id;
         this.brand = brand;
         this.style = style;
@@ -91,11 +98,20 @@ public class Cap {
         this.size = size;
         this.gender = gender;
         this.stock = stock;
+        this.imageUrl = url;
     }
 
     public boolean similar(Cap cap) {
-        return Double.compare(price, cap.price) == 0 && stock == cap.stock && Objects.equals(brand, cap.brand) && style == cap.style && Objects.equals(color, cap.color) && Objects.equals(collaboration, cap.collaboration) && size == cap.size && gender == cap.gender;
+        return Double.compare(price, cap.price) == 0 && stock == cap.stock && Objects.equals(brand, cap.brand) && style == cap.style && Objects.equals(color, cap.color) && Objects.equals(collaboration, cap.collaboration) && size == cap.size && gender == cap.gender && Objects.equals(imageUrl, cap.imageUrl);
 
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public long getId() {

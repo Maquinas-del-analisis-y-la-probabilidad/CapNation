@@ -16,7 +16,7 @@ public class CapFormatterTest {
         Cap cap = new Cap.CapBuilder(CapStyle.BASEBALL_CAP, "Black", "addidas", 45000.0, CapSize.LARGE, 3)
                 .setId(1L)
                 .build();
-        String expected = "1,BASEBALL_CAP,Black,addidas,-,45000.0,LARGE,-,3";
+        String expected = "1,BASEBALL_CAP,Black,addidas,-,45000.0,LARGE,-,3,-";
         String actual = formatter.capToText(cap);
         assertEquals(expected, actual);
     }
@@ -28,7 +28,7 @@ public class CapFormatterTest {
                 .setGender(Gender.MALE)
                 .build();
 
-        String expected = "1,BASEBALL_CAP,Black,addidas,-,45000.0,LARGE,MALE,3";
+        String expected = "1,BASEBALL_CAP,Black,addidas,-,45000.0,LARGE,MALE,3,-";
         String actual = formatter.capToText(cap);
         assertEquals(expected, actual);
     }
@@ -40,27 +40,27 @@ public class CapFormatterTest {
                 .setCollaboration("BMW")
                 .build();
 
-        String expected = "1,BASEBALL_CAP,Black,addidas,BMW,45000.0,LARGE,-,3";
+        String expected = "1,BASEBALL_CAP,Black,addidas,BMW,45000.0,LARGE,-,3,-";
         String actual = formatter.capToText(cap);
         assertEquals(expected, actual);
     }
 
     @Test
     void format_cap_with_no_null_parameters() {
-        Cap cap = new Cap.CapBuilder( CapStyle.BASEBALL_CAP, "black", "addidas", 30000.0, CapSize.LARGE, 4)
+        Cap cap = new Cap.CapBuilder(CapStyle.BASEBALL_CAP, "black", "addidas", 30000.0, CapSize.LARGE, 4)
                 .setId(1L)
                 .setCollaboration("bmw")
                 .setGender(Gender.MALE)
                 .build();
 
-        String expected = "1,BASEBALL_CAP,black,addidas,bmw,30000.0,LARGE,MALE,4";
+        String expected = "1,BASEBALL_CAP,black,addidas,bmw,30000.0,LARGE,MALE,4,-";
         String actual = formatter.capToText(cap);
         assertEquals(expected, actual);
     }
 
     @Test
     void create_line_with_no_null_values() {
-        String line = "1,BASEBALL_CAP,Black,addidas,BMW,3000.0,LARGE,MALE,3";
+        String line = "1,BASEBALL_CAP,Black,addidas,BMW,3000.0,LARGE,MALE,3,-";
         Cap expected = new Cap.CapBuilder(CapStyle.BASEBALL_CAP, "Black", "addidas", 3000.0, CapSize.LARGE, 3)
                 .setId(1L)
                 .setCollaboration("BMW")
@@ -74,7 +74,7 @@ public class CapFormatterTest {
 
     @Test
     void create_cap_form_line_with_no_gender() {
-        String line = "1,BASEBALL_CAP,Black,addidas,BMW,300.0,LARGE,-,3";
+        String line = "1,BASEBALL_CAP,Black,addidas,BMW,300.0,LARGE,-,3,-";
         Cap expected = new Cap.CapBuilder(CapStyle.BASEBALL_CAP, "Black", "addidas", 300.0, CapSize.LARGE, 3)
                 .setId(1L)
                 .setCollaboration("BMW")
@@ -87,7 +87,7 @@ public class CapFormatterTest {
 
     @Test
     void create_cap_from_line_with_no_collaboration() {
-        String line = "1,BASEBALL_CAP,Black,addidas,-,300.0,LARGE,MALE,3";
+        String line = "1,BASEBALL_CAP,Black,addidas,-,300.0,LARGE,MALE,3,-";
         var expected = new Cap.CapBuilder(CapStyle.BASEBALL_CAP, "Black", "addidas", 300.0, CapSize.LARGE, 3)
                 .setId(1L)
                 .setGender(Gender.MALE)
@@ -100,7 +100,7 @@ public class CapFormatterTest {
 
     @Test
     void create_cap_from_line_with_no_collaboration_nor_gender() {
-        String line = "1,BASEBALL_CAP,Black,addidas,-,300.0,LARGE,-,3";
+        String line = "1,BASEBALL_CAP,Black,addidas,-,300.0,LARGE,-,3,-";
         var expected = new Cap.CapBuilder(CapStyle.BASEBALL_CAP, "Black", "addidas", 300.0, CapSize.LARGE, 3)
                 .setId(1L)
                 .build();
@@ -108,6 +108,33 @@ public class CapFormatterTest {
         var actual = formatter.TextToCap(line);
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void create_line_from_cap_with_url() {
+        String expected = "1,BASEBALL_CAP,Red,addidas,-,300.0,LARGE,-,3,https://m.media-amazon.com/images/I/81fj+rks4jL._AC_SX569_.jpg";
+        var cap = new Cap.CapBuilder(CapStyle.BASEBALL_CAP, "Red", "addidas", 300.0, CapSize.LARGE, 3)
+                .setId(1L)
+                .setImageUrl("https://m.media-amazon.com/images/I/81fj+rks4jL._AC_SX569_.jpg")
+                .build();
+
+        var actual = formatter.capToText(cap);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void create_cap_from_line_with_url() {
+        Cap expected = new Cap.CapBuilder(CapStyle.BASEBALL_CAP, "Red", "addidas", 300.0, CapSize.LARGE, 3)
+                .setId(1L)
+                .setImageUrl("https://m.media-amazon.com/images/I/81fj+rks4jL._AC_SX569_.jpg")
+                .build();
+
+        Cap actual = formatter.TextToCap("1,BASEBALL_CAP,Red,addidas,-,300.0,LARGE,-,3,https://m.media-amazon.com/images/I/81fj+rks4jL._AC_SX569_.jpg");
+
+        assertEquals(expected, actual);
+
+
     }
 }
 

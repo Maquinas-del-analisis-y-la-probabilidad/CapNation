@@ -1,7 +1,6 @@
 package com.machines.capnation.formatter;
 
 import com.machines.capnation.model.Role;
-import com.machines.capnation.model.User;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

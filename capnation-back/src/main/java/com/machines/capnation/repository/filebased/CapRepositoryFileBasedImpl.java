@@ -37,7 +37,11 @@ public class CapRepositoryFileBasedImpl implements CapRepository {
     @Value("file:${capIndex.file}")
     private Resource index;
 
+    @Value("file:${brandIndex.file}")
+    private Resource brandIndex;
+
     private List<Cap> capList = new ArrayList<>();
+    private List<String> brandList = new ArrayList<>();
 
     private void initialize() {
         if (capList.isEmpty()) {
@@ -77,6 +81,11 @@ public class CapRepositoryFileBasedImpl implements CapRepository {
         var positionInHeap = indexList.get(idx).getDirection();
 
         return capList.get(positionInHeap);
+    }
+
+    @Override
+    public List<Cap> findByBrand(String brand) {
+
     }
 
     // read all lines into a resource file.
@@ -125,5 +134,4 @@ public class CapRepositoryFileBasedImpl implements CapRepository {
             throw new RuntimeException(e.getMessage());
         }
     }
-
 }

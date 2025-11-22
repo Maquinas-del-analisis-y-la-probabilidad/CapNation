@@ -1,0 +1,19 @@
+.topBar {
+  display: flex;
+  padding: 10px 5px;
+  border-bottom: solid 1px var(--txt-atenuated-color);
+  margin: 0px 12px;
+
+  h2 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    svg {
+      color: var(--primary-color);
+      width: 42px;
+      height: auto;
+    }
+  }
+}

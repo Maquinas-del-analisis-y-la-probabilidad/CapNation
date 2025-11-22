@@ -1,0 +1,24 @@
+.capCard {
+  background: var(--container-bg-color);
+  display: flex;
+  flex-direction: column;
+  min-width: fit-content;
+  max-width: 230px;
+  padding: 10px 16px;
+  border-radius: 12px;
+
+  img {
+    padding: 5px;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    align-self: center;
+  }
+
+  span:nth-child(2) {
+    font-weight: bold;
+    padding: 5px 0;
+    color: var(--primary-color);
+  }
+}

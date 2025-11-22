@@ -11,5 +11,5 @@ public interface CapRepository {
 
     Cap findById(Long id);
 
-    List<Cap> findByBrand(String brand)
+    List<Cap> findByBrand(String brand);
 }

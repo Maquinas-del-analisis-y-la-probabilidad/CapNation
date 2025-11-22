@@ -36,4 +36,9 @@ public class CapController {
     public ResponseEntity<Cap> getById(@RequestParam("id") Long id) {
         return ResponseEntity.ok().body(service.findById(id));
     }
+
+    @GetMapping("/find/brand")
+    public ResponseEntity<List<Cap>> findByCap(@RequestParam("brand") String brand) {
+        return ResponseEntity.ok().body(service.findByBrand(brand));
+    }
 }

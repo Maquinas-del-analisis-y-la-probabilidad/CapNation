@@ -15,10 +15,25 @@
     border-radius: 10px;
     align-self: center;
   }
+}
 
-  span:nth-child(2) {
-    font-weight: bold;
-    padding: 5px 0;
-    color: var(--primary-color);
-  }
+.capDescription {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  margin: 0.5rem auto;
+}
+.capDescription span:first-child {
+  font-weight: bold;
+  padding: 5px 0;
+  color: var(--primary-color);
+}
+
+.capDescription span:not(:first-child) {
+  margin-top: 5px;
+  color: var(--txt-atenuated-color);
+}
+
+.capDescription span:last-child {
+  color: var(--txt-color);
 }

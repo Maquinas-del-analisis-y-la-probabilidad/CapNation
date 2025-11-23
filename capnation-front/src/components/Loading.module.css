@@ -1,0 +1,12 @@
+.loading {
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  margin: 3rem auto;
+  align-items: center;
+
+  svg {
+    width: 48px;
+    height: auto;
+  }
+}

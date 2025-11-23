@@ -7,8 +7,9 @@ function App() {
   return (
     <>
       <TopBar />
-      <Home />
-
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+      </Routes>
       <Footer />
     </>
   );

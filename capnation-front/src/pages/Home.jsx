@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CapCard } from "../components/CapCard.jsx";
 import styles from "./Home.module.css";
+import { useSearchParams } from "react-router-dom";
+import { CapDialog } from "../components/CapDialog.jsx";
 
 const searchMapper = {
   brand: "brand",
@@ -8,14 +10,17 @@ const searchMapper = {
 };
 
 function useForm() {
-  const BASE_URL = "http://localhost:8080/cap/find-all";
+  const BASE_URL = "http://localhost:8080/cap";
   const [serchType, setSearchType] = useState(searchMapper.id);
   const [caps, setCaps] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [cap, setCap] = useState(null);
+  const [capError, setCapError] = useState(null);
 
-  useEffect(() => {
-    fetch(BASE_URL)
+  const fetchAllCaps = () => {
+    fetch(`${BASE_URL}/find-all`)
       .then((res) => {
         setIsLoading(true);
         if (!res.ok) {
@@ -31,18 +36,101 @@ function useForm() {
       .finally(() => {
         setIsLoading(false);
       });
+  };
+
+  useEffect(() => {
+    const brand = searchParams.get("brand");
+    if (brand) {
+      const params = new URLSearchParams();
+      params.append("brand", brand);
+
+      fetch(`${BASE_URL}/find/brand?${params}`)
+        .then((res) => {
+          setIsLoading(true);
+          if (!res.ok) {
+            throw new Error("Failed to fetch caps by brand");
+          }
+          return res.json();
+        })
+        .then((data) => setCaps(data))
+        .catch((error) => {
+          console.log(error);
+          setIsError(true);
+        })
+        .finally(() => setIsLoading(false));
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    const id = searchParams.get("id");
+
+    if (id) {
+      const params = new URLSearchParams();
+      params.append("id", id);
+      fetch(`${BASE_URL}/find?${params}`)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("failed to fetch by id");
+          }
+          return res.json();
+        })
+        .then((data) => setCap(data))
+        .catch((error) => {
+          console.log(error);
+          setCapError(true);
+        });
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    fetchAllCaps();
   }, []);
 
   const handleSetSearchType = (type) => {
     setSearchType(searchMapper[type]);
   };
 
-  return { handleSetSearchType, serchType, isLoading, caps, isError };
+  const onCloseCap = () => {
+    setCapError(null);
+    setCap(null);
+
+    const voidSearchParams = new URLSearchParams();
+    setSearchParams(voidSearchParams);
+  };
+
+  const setID = (id) => {
+    const newParams = new URLSearchParams();
+
+    newParams.append("id", id);
+    setSearchParams(newParams);
+  };
+
+  return {
+    handleSetSearchType,
+    serchType,
+    isLoading,
+    caps,
+    isError,
+    cap,
+    onCloseCap,
+    capError,
+    setID,
+  };
 }
 
 export function Home() {
-  const { handleSetSearchType, serchType, isLoading, caps, isError } =
-    useForm();
+  const refDialog = useRef();
+  const {
+    handleSetSearchType,
+    serchType,
+    isLoading,
+    caps,
+    isError,
+    cap,
+    onCloseCap,
+    capError,
+    setID,
+  } = useForm();
 
   if (isLoading) {
     return <p>Cargando...</p>;
@@ -56,6 +144,17 @@ export function Home() {
 
   return (
     <main>
+      <dialog ref={refDialog}>
+        <CapDialog
+          cap={cap}
+          isError={capError}
+          onCloseCap={() => {
+            refDialog.current.close();
+            onCloseCap();
+          }}
+        />
+      </dialog>
+
       <header>
         <h1>Bienvenido a CapNation</h1>
         <p>Encuentra la s mejores gorras, de diferentes marcas y estilos</p>
@@ -75,7 +174,18 @@ export function Home() {
             Buscar por Marca
           </button>
         </div>
-        <form className={styles.serachForm} action="">
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (serchType === searchMapper.id) {
+              const data = new FormData(event.target);
+              setID(data.get("id"));
+              refDialog.current.showModal();
+            }
+          }}
+          className={styles.serachForm}
+          action=""
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="1em"

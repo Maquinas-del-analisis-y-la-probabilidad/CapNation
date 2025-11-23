@@ -1,128 +1,23 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { CapCard } from "../components/CapCard.jsx";
 import styles from "./Home.module.css";
-import { useSearchParams } from "react-router-dom";
+import { useForm } from "../hooks/useForm.jsx";
 import { CapDialog } from "../components/CapDialog.jsx";
+import { Loading } from "../components/Loading.jsx";
+import { Error } from "../components/Error.jsx";
 
-const searchMapper = {
+export const searchMapper = {
   brand: "brand",
   id: "id",
 };
 
-function useForm() {
-  const BASE_URL = "http://localhost:8080/cap";
-  const [serchType, setSearchType] = useState(searchMapper.id);
-  const [caps, setCaps] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [cap, setCap] = useState(null);
-  const [capError, setCapError] = useState(null);
-
-  const fetchAllCaps = () => {
-    fetch(`${BASE_URL}/find-all`)
-      .then((res) => {
-        setIsLoading(true);
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return res.json();
-      })
-      .then((data) => setCaps(data))
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setIsError(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    const brand = searchParams.get("brand");
-    if (brand) {
-      const params = new URLSearchParams();
-      params.append("brand", brand);
-
-      fetch(`${BASE_URL}/find/brand?${params}`)
-        .then((res) => {
-          setIsLoading(true);
-          if (!res.ok) {
-            throw new Error("Failed to fetch caps by brand");
-          }
-          return res.json();
-        })
-        .then((data) => setCaps(data))
-        .catch((error) => {
-          console.log(error);
-          setIsError(true);
-        })
-        .finally(() => setIsLoading(false));
-    }
-  }, [searchParams]);
-
-  useEffect(() => {
-    const id = searchParams.get("id");
-
-    if (id) {
-      const params = new URLSearchParams();
-      params.append("id", id);
-      fetch(`${BASE_URL}/find?${params}`)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error("failed to fetch by id");
-          }
-          return res.json();
-        })
-        .then((data) => setCap(data))
-        .catch((error) => {
-          console.log(error);
-          setCapError(true);
-        });
-    }
-  }, [searchParams]);
-
-  useEffect(() => {
-    fetchAllCaps();
-  }, []);
-
-  const handleSetSearchType = (type) => {
-    setSearchType(searchMapper[type]);
-  };
-
-  const onCloseCap = () => {
-    setCapError(null);
-    setCap(null);
-
-    const voidSearchParams = new URLSearchParams();
-    setSearchParams(voidSearchParams);
-  };
-
-  const setID = (id) => {
-    const newParams = new URLSearchParams();
-
-    newParams.append("id", id);
-    setSearchParams(newParams);
-  };
-
-  return {
-    handleSetSearchType,
-    serchType,
-    isLoading,
-    caps,
-    isError,
-    cap,
-    onCloseCap,
-    capError,
-    setID,
-  };
-}
-
 export function Home() {
   const refDialog = useRef();
+  const refInput = useRef();
+
   const {
     handleSetSearchType,
-    serchType,
+    serchType: searchType,
     isLoading,
     caps,
     isError,
@@ -130,15 +25,22 @@ export function Home() {
     onCloseCap,
     capError,
     setID,
+    setBrand,
+    brandError,
+    brandValue,
+    onClean,
   } = useForm();
 
   if (isLoading) {
-    return <p>Cargando...</p>;
+    return <Loading />;
   }
 
   if (isError) {
     return (
-      <p>Error al cargar los datos. Por favor, inténtalo de nuevo más tarde.</p>
+      <Error
+        title="Error al cargar los datos"
+        description="Por favor, inténtalo de nuevo más tarde"
+      />
     );
   }
 
@@ -150,6 +52,7 @@ export function Home() {
           isError={capError}
           onCloseCap={() => {
             refDialog.current.close();
+            refInput.current.value = "";
             onCloseCap();
           }}
         />
@@ -162,14 +65,20 @@ export function Home() {
       <main className={styles.capsContainer}>
         <div className={styles.searchTypeButtons}>
           <button
-            onClick={() => handleSetSearchType(searchMapper.id)}
-            className={serchType === searchMapper.id ? styles.selected : ""}
+            onClick={() => {
+              handleSetSearchType(searchMapper.id);
+              refInput.current.value = "";
+            }}
+            className={searchType === searchMapper.id ? styles.selected : ""}
           >
             Buscar por ID
           </button>
           <button
-            onClick={() => handleSetSearchType(searchMapper.brand)}
-            className={serchType === searchMapper.brand ? styles.selected : ""}
+            onClick={() => {
+              handleSetSearchType(searchMapper.brand);
+              refInput.current.value = "";
+            }}
+            className={searchType === searchMapper.brand ? styles.selected : ""}
           >
             Buscar por Marca
           </button>
@@ -177,10 +86,14 @@ export function Home() {
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            if (serchType === searchMapper.id) {
+            if (searchType === searchMapper.id) {
               const data = new FormData(event.target);
               setID(data.get("id"));
               refDialog.current.showModal();
+            }
+            if (searchType === searchMapper.brand) {
+              const data = new FormData(event.target);
+              setBrand(data.get("brand"));
             }
           }}
           className={styles.serachForm}
@@ -204,27 +117,53 @@ export function Home() {
             </g>
           </svg>
           <input
+            ref={refInput}
             type="text"
-            name={serchType}
+            name={searchType}
+            defaultValue={brandValue}
             placeholder={
-              serchType === searchMapper.id
+              searchType === searchMapper.id
                 ? "Busca gorras por ID"
                 : "Busca gorras por marca"
             }
           />
           <button>Buscar</button>
         </form>
+        {searchType === searchMapper.brand ? (
+          <button
+            style={{ width: "fit-content", alignSelf: "center" }}
+            onClick={onClean}
+          >
+            Limpiar
+          </button>
+        ) : (
+          <></>
+        )}
 
         <section>
-          <h2>Resultados de la búsqueda</h2>
-
-          <div className={styles.gridContainer}>
-            {caps.map((cap) => {
-              return <CapCard key={cap.id} {...cap} />;
-            })}
-          </div>
+          {brandError === null ? (
+            <CapsGrid caps={caps} />
+          ) : (
+            <Error
+              title="Error al cargar las gorras"
+              description={brandError}
+            />
+          )}
         </section>
       </main>
     </main>
+  );
+}
+
+function CapsGrid({ caps }) {
+  return (
+    <>
+      <h2>Resultados de la búsqueda</h2>
+      <div className={styles.gridContainer}>
+        {caps.map((cap) => {
+          return <CapCard key={cap.id} {...cap} />;
+        })}
+      </div>
+    </>
   );
 }

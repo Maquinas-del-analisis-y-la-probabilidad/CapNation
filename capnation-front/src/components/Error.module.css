@@ -1,0 +1,12 @@
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 3rem auto;
+}
+
+.error svg {
+  color: pink;
+  width: 48px;
+  height: auto;
+}

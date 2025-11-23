@@ -30,6 +30,10 @@ button {
     cursor: pointer;
     background-color: var(--secondary-container-bg-color);
   }
+
+  &:active {
+    transform: scale(0.9);
+  }
 }
 
 main {

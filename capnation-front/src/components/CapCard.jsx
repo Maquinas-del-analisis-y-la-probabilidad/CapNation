@@ -15,10 +15,12 @@ export function CapCard({
   return (
     <article className={styles.capCard}>
       <img src={imageUrl} alt={`Gorra de la marca ${brand}`} />
-      <span>{title}</span>
-      <span>Talla: {sizeMapper[size]}</span>
-      <span>Estilo: {styleMapper[style]}</span>
-      <span>Precio: ${price}</span>
+      <div className={styles.capDescription}>
+        <span>{title}</span>
+        <span>Talla: {sizeMapper[size]}</span>
+        <span>Estilo: {styleMapper[style]}</span>
+        <span>Precio: ${price}</span>
+      </div>
     </article>
   );
 }

@@ -10,4 +10,6 @@ public interface CapRepository {
     Cap save(Cap cap); // save a new cap in the file and return it
 
     Cap findById(Long id);
+
+    List<Cap> findByBrand(String brand);
 }

@@ -1,0 +1,84 @@
+.capForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+.capForm input {
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 14px;
+  background: transparent;
+  border: solid 1px var(--txt-atenuated-color);
+  border-radius: 8px;
+  color: var(--txt-color);
+}
+
+.capForm select {
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 14px;
+  background: transparent;
+  border: solid 1px var(--txt-atenuated-color);
+  border-radius: 8px;
+  color: var(--txt-color);
+
+  &::focus {
+    background: transparent;
+  }
+}
+
+.capInfo {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 2rem;
+  row-gap: 10px;
+}
+
+.capForm fieldset {
+  border: solid 1px var(--txt-atenuated-color);
+  border-radius: 8px;
+  padding: 2rem 1rem;
+}
+
+.imageFieldset {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.imageContainer {
+  width: 200px;
+  height: 200px;
+  padding: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: solid 1px var(--txt-atenuated-color);
+
+  svg {
+    width: 65px;
+    height: auto;
+    margin: auto;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    align-self: center;
+  }
+}
+
+.success {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}

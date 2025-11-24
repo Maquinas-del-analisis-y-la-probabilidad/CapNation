@@ -41,4 +41,8 @@ public class CapServiceImplementation implements CapService {
     public Cap findById(Long id) {
         return repository.findById(id);
     }
+
+    public List<Cap> findByBrand(String brand) {
+        return repository.findByBrand(brand);
+    }
 }

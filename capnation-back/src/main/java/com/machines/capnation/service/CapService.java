@@ -10,4 +10,6 @@ public interface CapService {
     Cap save(Cap cap);
 
     Cap findById(Long id);
+
+    List<Cap> findByBrand(String brand);
 }

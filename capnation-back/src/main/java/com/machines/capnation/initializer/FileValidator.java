@@ -15,7 +15,8 @@ public class FileValidator implements EnvironmentPostProcessor {
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         validateFile(environment.getProperty("caps.file"));
-        validateFile(environment.getProperty("users.file"));
+        validateFile(environment.getProperty("capIndex.file"));
+        validateFile(environment.getProperty("brandIndex.file"));
     }
 
     private void validateFile(String pathStr) {

@@ -1,0 +1,39 @@
+.capCard {
+  background: var(--container-bg-color);
+  display: flex;
+  flex-direction: column;
+  min-width: fit-content;
+  max-width: 230px;
+  padding: 20px 16px;
+  border-radius: 12px;
+
+  img {
+    padding: 5px;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    align-self: center;
+  }
+}
+
+.capDescription {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  margin: 0.5rem auto;
+}
+.capDescription span:first-child {
+  font-weight: bold;
+  padding: 5px 0;
+  color: var(--primary-color);
+}
+
+.capDescription span:not(:first-child) {
+  margin-top: 5px;
+  color: var(--txt-atenuated-color);
+}
+
+.capDescription span:last-child {
+  color: var(--txt-color);
+}

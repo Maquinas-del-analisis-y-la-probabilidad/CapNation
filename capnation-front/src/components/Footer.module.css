@@ -1,0 +1,8 @@
+.footerBar {
+  margin-top: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 10px;
+  border-top: solid 1px var(--txt-atenuated-color);
+}

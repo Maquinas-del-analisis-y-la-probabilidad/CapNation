@@ -3,6 +3,8 @@
   padding: 10px 5px;
   border-bottom: solid 1px var(--txt-atenuated-color);
   margin: 0px 12px;
+  align-items: center;
+  justify-content: space-between;
 
   h2 {
     margin: 0;
@@ -14,6 +16,19 @@
       color: var(--primary-color);
       width: 42px;
       height: auto;
+    }
+  }
+}
+
+.topBar nav {
+  display: flex;
+
+  a {
+    color: var(--txt-color);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
     }
   }
 }
